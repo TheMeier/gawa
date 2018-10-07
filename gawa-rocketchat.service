@@ -1,0 +1,15 @@
+[Unit]
+Description=GAWA RocketChat
+After=network.target
+
+[Service]
+Type=simple
+User=nobody
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/usr/bin/gawa -targetURL 'https://rocketchat.local/services/hooks/<CHANNEL>/<TOKEN>?alias=<ALIAS>&avatar=<AVATAR>' -addr localhost:9098 -postTemplate /etc/gawa/rocketchat.tmpl
+WorkingDirectory=/var/tmp
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+

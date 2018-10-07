@@ -1,0 +1,4 @@
+vendor/
+Gopkg.lock
+Gopkg.toml
+gawa

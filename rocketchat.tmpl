@@ -1,0 +1,19 @@
+{{- define "__alertmanager" }}AlertManager{{ end }}
+{{- define "__alertmanagerURL" }}{{ .ExternalURL }}/#/alerts?receiver={{ .Receiver }}{{ end }}
+{{- define "__statusColor"}}{{  if eq .Status "firing"  }}danger{{else}}good{{end}}{{end}}
+{{- define "__statusEmoji"}}{{  if eq .Status "firing"  }}:exclamation:{{else}}:white_check_mark:{{end}}{{end}}
+{{- define "__alert"}}{{ "{" }}
+      "status": "{{ .Status }}",
+      "color": "{{ template "__statusColor" . }}",
+      "text": "{{ template "__statusEmoji" . }} [{{ .Annotations.summary }}]({{ .GeneratorURL }})"
+    {{ "}" }}{{ end }}
+
+{{ "{" }}
+  "text": "AlertManager {{ .ExternalURL }}",
+  "attachments": [
+    {{- range $index, $element := .Alerts }}{{if $index}},{{end}}
+      {{ template "__alert" $element }}
+      {{- end}}
+  ]
+{{ "}" }}
+

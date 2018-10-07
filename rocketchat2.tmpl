@@ -1,0 +1,8 @@
+{{- define "__generator_url" }}{{ (index .Alerts 0).GeneratorURL }}{{ end }}
+{{- define "__subject" }}{{ if eq .Status "firing" }}:exclamation:{{ else }}:white_check_mark:{{end}} [{{ .Status | upper}}: {{ .GroupLabels.alertname }}]({{ template "__generator_url" . }}){{end}}
+{{- define "__text_alert_list" }} *Labels*:{{ range $key, $value := .CommonLabels}} {{ $key }}: `{{ $value }}`{{ end }}{{ end }}
+{{- define "__instance_list" }}{{ if eq .Status "firing" }} *Instances*:{{ range .Alerts }}{{ if eq .Status "firing" }} `{{ if .Labels.instance }}{{ .Labels.instance }}{{ else }}{{ .Labels.source }}{{ end }}`{{ end }}{{ end }}{{ end }}{{ end }}
+{{ "{" }}
+  "text": "#### {{ template "__subject" . }}\n\t *Description*: {{ .CommonAnnotations.description }}\n\t{{ template "__instance_list" .}}\n\t{{ template "__text_alert_list" .}}"
+{{ "}" }}
+
