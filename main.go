@@ -205,7 +205,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	if resp.StatusCode/100 != 2 {
 		notificationsErrored.Inc()
 		err := fmt.Errorf("POST to rest target on %q returned HTTP %d:  %s", targetURL, resp.StatusCode, body)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), resp.StatusCode)
 		log.Print(err)
 		return
 	}

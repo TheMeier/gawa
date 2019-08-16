@@ -72,7 +72,7 @@ func TestErrorsPassedThrough(t *testing.T) {
 	w, r := recordedRequest(t, s.URL+"/webhook")
 	handler(w, r)
 
-	expectedCode := http.StatusInternalServerError
+	expectedCode := 404
 	if w.Code != expectedCode {
 		t.Fatalf("expected HTTP status %d, got %d", expectedCode, w.Code)
 	}
@@ -157,6 +157,6 @@ var amNotification = []byte(`{
 
 var postContent = []byte(`
 {
-  "text": "#### :exclamation: [FIRING: Foo_Bar](https://example.com)\n\t *Description*: alert description\n\t *Instances*: `+"`foo1` `foo2-source`"+`\n\t *Labels*: alertname: `+"`"+`Foo_Bar`+"`"+` app: `+"`"+`testapp`+"`"+` job: `+"`"+`testjob`+"`"+`"
+  "text": "#### :exclamation: [FIRING: Foo_Bar](https://example.com)\n\t *Description*: alert description\n\t *Instances*: ` + "`foo1` `foo2-source`" + `\n\t *Labels*: alertname: ` + "`" + `Foo_Bar` + "`" + ` app: ` + "`" + `testapp` + "`" + ` job: ` + "`" + `testjob` + "`" + `"
 }
 `)
